@@ -5,6 +5,7 @@
 #include <tyga/Math.hpp>
 #include <memory>
 #include <list>
+#include "MyUtils.hpp"
 
 //namespace your_name_here
 //{
