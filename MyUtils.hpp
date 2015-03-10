@@ -22,25 +22,55 @@ namespace utilAyre
 					   const Ogre::String initMaterial(Ogre::String materialName, Ogre::String texturePath);
 
 					   */
+#pragma region ConversionFunctions & Clamp
+
 	float DegToRad(float degrees);
 
 	float Dot2Vec3(tyga::Vector3 a, tyga::Vector3 b);
 
+	tyga::Vector3 GetPos(tyga::Matrix4x4 source_xform);
+
 	float Dot3Vec3(tyga::Vector3 a, tyga::Vector3 b, tyga::Vector3 c);
+
+	float Clamp(float value, float min, float max);
+<<<<<<< HEAD
+
+#pragma endregion
+
+#pragma region Bezier & Euler Functions
 
 	tyga::Vector3 CalcBezier(const tyga::Vector3 p0, const tyga::Vector3 p1, tyga::Vector3 p2, tyga::Vector3 p3, float s); //refactored version of the simple bezier calculations I used in OGRE, float between 0 and 1 for positon along a bezier curve
 
-	tyga::Vector3 GetPos(tyga::Matrix4x4 source_xform);
+	inline tyga::Vector3 EulerVec(tyga::Vector3 rootVec, float timeStep, tyga::Vector3 derivative){ return rootVec + timeStep * derivative; }
+=======
 
-	tyga::Vector3 EulerVec(tyga::Vector3 rootVec, float timeStep, tyga::Vector3 derivative);
+#pragma endregion
 
+#pragma region Bezier & Euler Functions
+
+	tyga::Vector3 CalcBezier(const tyga::Vector3 p0, const tyga::Vector3 p1, tyga::Vector3 p2, tyga::Vector3 p3, float s); //refactored version of the simple bezier calculations I used in OGRE, float between 0 and 1 for positon along a bezier curve
+>>>>>>> origin/master
+
+#pragma endregion
+
+<<<<<<< HEAD
+#pragma region NormaliseQuaternion/Magnitude, Direction Unit Vector
+
+=======
+#pragma endregion
+
+#pragma region NormaliseQuaternion/Magnitude, Direction Unit Vector
+
+>>>>>>> origin/master
 	tyga::Quaternion NormQuat(tyga::Quaternion quat, float magnitude);
-
-	float LinStep(float min, float max, float x);
 
 	tyga::Vector3 DirectionVec(tyga::Matrix4x4 mat4);
 
 	float magnitudeOfQuaternion(tyga::Quaternion q, tyga::Quaternion qc);
+
+#pragma endregion
+
+#pragma region TranslationRotation
 
 	tyga::Matrix4x4 QuatToRotateMat(tyga::Quaternion q);
 
@@ -48,16 +78,28 @@ namespace utilAyre
 
 	tyga::Matrix4x4 Translate(tyga::Vector3 pos);
 
+#pragma endregion
+
+#pragma region InterpolationFunctions
+
+	float Smoothstep(float t);
+
 	float Lerp(float initPos, float endPos, float time);
 
 	tyga::Vector3 Lerp(tyga::Vector3 initPos, tyga::Vector3 endPos, float time);
 
-	float Clamp(float value, float min, float max);
+	float LinStep(float min, float max, float x);
 
-	float Smoothstep(float t);
+#pragma endregion
+
+#pragma region RandomFunctions
+
+	float RandomScalar(float min, float max);
+	tyga::Vector3 RandomVec3();
+
+#pragma endregion
 
 	tyga::Vector3 ApplyGravity(tyga::Vector3 initForce);
-
 
 }
 

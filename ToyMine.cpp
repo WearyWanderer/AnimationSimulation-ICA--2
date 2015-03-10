@@ -40,6 +40,14 @@ trigger()
 {
     // TODO: code to begin the explosion animation/simulation
     tyga::debugLog("ToyMine::trigger: toy should explode now");
+
+	tyga::Vector3 source_position = utilAyre::GetPos(this->Actor()->Transformation());
+	float triggerStart = tyga::BasicWorldClock::CurrentTime();
+<<<<<<< HEAD
+
+
+=======
+>>>>>>> origin/master
 }
 
 void ToyMine::

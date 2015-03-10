@@ -75,11 +75,6 @@ namespace utilAyre
 
 #pragma region newTygaFunctions
 
-		tyga::Vector3 EulerVec(tyga::Vector3 rootVec, float timeStep, tyga::Vector3 derivative)
-		{
-			return rootVec + timeStep * derivative;
-		}
-
 		tyga::Vector3 DirectionVec(tyga::Matrix4x4 mat4)
 		{
 			tyga::Vector3 dv;
@@ -101,7 +96,7 @@ namespace utilAyre
 
 		tyga::Vector3 ApplyGravity(tyga::Vector3 initForce)
 		{
-			return initForce += tyga::Vector3(0, -9.81f, 0); //using real gravity value as base
+			return initForce + tyga::Vector3(0, -9.81f, 0); //using real gravity value as base
 		}
 
 		float Dot2Vec3(tyga::Vector3 a, tyga::Vector3 b)
