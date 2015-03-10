@@ -182,20 +182,11 @@ runloopExecuteTask()
 
         // TODO: perform the physics (kinetic motion) update
 
-		tyga::Vector3 acceleration = utilAyre::ApplyGravity(model->force / model->mass); //Newton's good ol' 2nd Law - apply gravity straight away to the acceleration so that the mines eventually fall
+		tyga::Vector3 acceleration = utilAyre::ApplyGravity(model->force)/model->mass; //Newton's good ol' 2nd Law - apply gravity straight away to the acceleration so that the mines eventually fall
 
-		model->velocity += acceleration;
-		tyga::Vector3 newPos = model->position() += model->velocity; //new position needed after velocity changes pos
+		model->velocity += acceleration * delta_time;
 
-		//get time for lerp'ing
-		const float globalTime = tyga::BasicWorldClock::CurrentTickInterval();
-
-		const float animStart = 0.f; //initialiase a 0 value to track the anim time
-		const float animStop = 12.5f; //longer value to check that this works nicely
-		const float animClamp = utilAyre::Clamp(globalTime, animStart, animStop);
-		const float animLerpTime = (animClamp - animStart) / (animStop - animStart);
-
-		newPos = utilAyre::Lerp(model->position(), newPos, animLerpTime); //use the calculated lerp of this frame to lerp the toymine's position
+		tyga::Vector3 newPos = utilAyre::EulerVec(model->position(), delta_time, model->velocity); //use the calculated lerp of this frame to lerp the toymine's position
 
         // TODO: update the actor's transformation
 		actor->setTransformation(utilAyre::Translate(newPos));
