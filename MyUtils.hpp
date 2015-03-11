@@ -33,7 +33,6 @@ namespace utilAyre
 	float Dot3Vec3(tyga::Vector3 a, tyga::Vector3 b, tyga::Vector3 c);
 
 	float Clamp(float value, float min, float max);
-<<<<<<< HEAD
 
 #pragma endregion
 
@@ -42,29 +41,18 @@ namespace utilAyre
 	tyga::Vector3 CalcBezier(const tyga::Vector3 p0, const tyga::Vector3 p1, tyga::Vector3 p2, tyga::Vector3 p3, float s); //refactored version of the simple bezier calculations I used in OGRE, float between 0 and 1 for positon along a bezier curve
 
 	inline tyga::Vector3 EulerVec(tyga::Vector3 rootVec, float timeStep, tyga::Vector3 derivative){ return rootVec + timeStep * derivative; }
-<<<<<<< HEAD
-=======
-=======
->>>>>>> origin/master
+
 
 #pragma endregion
 
 #pragma region Bezier & Euler Functions
 
 	tyga::Vector3 CalcBezier(const tyga::Vector3 p0, const tyga::Vector3 p1, tyga::Vector3 p2, tyga::Vector3 p3, float s); //refactored version of the simple bezier calculations I used in OGRE, float between 0 and 1 for positon along a bezier curve
->>>>>>> origin/master
 
-#pragma endregion
-
-<<<<<<< HEAD
-#pragma region NormaliseQuaternion/Magnitude, Direction Unit Vector
-
-=======
 #pragma endregion
 
 #pragma region NormaliseQuaternion/Magnitude, Direction Unit Vector
 
->>>>>>> origin/master
 	tyga::Quaternion NormQuat(tyga::Quaternion quat, float magnitude);
 
 	tyga::Vector3 DirectionVec(tyga::Matrix4x4 mat4); //DEPRECATED, use tyga::unit instead

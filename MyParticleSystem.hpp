@@ -1,44 +1,35 @@
 #pragma once
 
 #include <tyga/ActorDelegate.hpp>
+#include <tyga\ActorWorld.hpp>
 #include <tyga\GraphicsCentre.hpp>
 #include <vector>
 
-class Particle : public tyga::ActorDelegate
+class MyParticleSystem : public tyga::GraphicsSpriteDelegate,
+						 public std::enable_shared_from_this<MyParticleSystem>
 {
 public:
-	Particle(int id);
 
-	inline void ReturnToPool(){ activeParticle = false; }
-private:
-
-	int id;
-	bool activeParticle;
-	
-};
-
-class ParticleSystem
-{
-public:
-	~ParticleSystem();
-	static ParticleSystem& getInstance()
+	struct Particle 
 	{
-		static ParticleSystem instance;
-		// Instantiated on first use.
-		return instance;
-	}
+		tyga::Vector3 position;
+		tyga::Vector3 velocity;
 
-	Particle* GetAvailableSprite();
-	inline std::vector<Particle>* GetParticlePool(){ return &particlePool; }
+	};
 
+	std::string graphicsSpriteTexture() const override;
+
+	inline std::shared_ptr<tyga::GraphicsSpriteDelegate> getSprite(){ return spriteImage; }
+
+	int graphicsSpriteVertexCount() const override;
+
+	void graphicsSpriteGenerate(tyga::GraphicsSpriteVertex vertex_array[]) const override;
+
+	std::vector<Particle> particles;
+	int particleQuantity = 10000;
 
 private:
-	ParticleSystem();
 
-	// technique of deleting the methods we don't want.
-	ParticleSystem(ParticleSystem const&) = delete;
-	void operator=(ParticleSystem const&) = delete;
+	std::shared_ptr<tyga::GraphicsSpriteDelegate> spriteImage;
 
-	std::vector<Particle> particlePool;
-	int particleQuantity = 10000;
 };

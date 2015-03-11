@@ -1,6 +1,5 @@
 #include "ToyMine.hpp"
 #include "MyUtils.hpp"
-#include "ParticleSystem.hpp"
 #include <tyga/Actor.hpp>
 #include <tyga/BasicWorldClock.hpp>
 #include <tyga/Math.hpp>
@@ -44,16 +43,6 @@ trigger()
 
 	tyga::Vector3 source_position = utilAyre::GetPos(this->Actor()->Transformation());
 	float triggerStart = tyga::BasicWorldClock::CurrentTime();
-<<<<<<< HEAD
-
-
-=======
-<<<<<<< HEAD
-
-
-=======
->>>>>>> origin/master
->>>>>>> origin/master
 }
 
 void ToyMine::
@@ -80,6 +69,8 @@ actorDidEnterWorld(std::shared_ptr<tyga::Actor> actor)
     actor->attachComponent(graphics_model);
     actor->attachComponent(physics_model);
     world->addActor(actor);
+	particle_system = std::make_shared<MyParticleSystem>();
+	graphics_sprite = graphics->newSpriteWithDelegate(particle_system);
 }
 
 void ToyMine::
@@ -90,7 +81,14 @@ actorWillLeaveWorld(std::shared_ptr<tyga::Actor> actor)
 void ToyMine::
 actorClockTick(std::shared_ptr<tyga::Actor> actor)
 {
+	float current_time = tyga::BasicWorldClock::CurrentTime();
+	//basic particle show test
+	particle_system->particles.resize(50);
 
+	for (int i = 0; i<10; ++i) {
+		float angle = current_time + i * 6.28f / 10;
+		particle_system->particles[i].position = physics_model_->position() + tyga::Vector3(5 * cosf(angle), 2, 5 * sinf(angle));
+	}
 
     // HINT: once the toy has exploded and there is no visible traces left
     //       then call this->removeFromWorld() to free the memory
