@@ -1,5 +1,6 @@
 #include "ToyMine.hpp"
 #include "MyUtils.hpp"
+#include "ParticleSystem.hpp"
 #include <tyga/Actor.hpp>
 #include <tyga/BasicWorldClock.hpp>
 #include <tyga/Math.hpp>
@@ -47,6 +48,11 @@ trigger()
 
 
 =======
+<<<<<<< HEAD
+
+
+=======
+>>>>>>> origin/master
 >>>>>>> origin/master
 }
 

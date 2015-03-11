@@ -184,7 +184,11 @@ runloopExecuteTask()
 
 		tyga::Vector3 acceleration = utilAyre::ApplyGravity(model->force)/model->mass; //Newton's good ol' 2nd Law - apply gravity straight away to the acceleration so that the mines eventually fall
 
+<<<<<<< HEAD
+		model->velocity += acceleration * delta_time; //integrate the acceleration with time
+=======
 		model->velocity += acceleration * delta_time;
+>>>>>>> origin/master
 
 		tyga::Vector3 newPos = utilAyre::EulerVec(model->position(), delta_time, model->velocity); //use the calculated lerp of this frame to lerp the toymine's position
 

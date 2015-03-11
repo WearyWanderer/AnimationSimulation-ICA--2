@@ -2,6 +2,7 @@
 
 #include <tyga/ActorDelegate.hpp>
 #include "MyPhysicsCentre.hpp"
+#include "MyParticleSystem.hpp"
 
 class ToyMine : public tyga::ActorDelegate
 {

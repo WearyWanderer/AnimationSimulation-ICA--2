@@ -99,6 +99,7 @@
     <ClInclude Include="MyPhysicsCentre.hpp" />
     <ClInclude Include="MyUtils.hpp" />
     <ClInclude Include="Badger.hpp" />
+    <ClInclude Include="MyParticleSystem.hpp" />
     <ClInclude Include="ToyMine.hpp" />
   </ItemGroup>
   <ItemGroup>
@@ -107,6 +108,7 @@
     <ClCompile Include="MyDemo.cpp" />
     <ClCompile Include="MyPhysicsCentre.cpp" />
     <ClCompile Include="MyUtils.cpp" />
+    <ClCompile Include="MyParticleSystem.cpp" />
     <ClCompile Include="ToyMine.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
