@@ -34,4 +34,6 @@ private:
 	std::shared_ptr<MyParticleSystem> particle_system;
 	std::shared_ptr<tyga::GraphicsSprite> graphics_sprite;
 
+	bool isDetontated = false;
+
 };

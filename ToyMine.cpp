@@ -43,6 +43,23 @@ trigger()
 
 	tyga::Vector3 source_position = utilAyre::GetPos(this->Actor()->Transformation());
 	float triggerStart = tyga::BasicWorldClock::CurrentTime();
+
+	int particlesNeeded = utilAyre::RandomScalar(10, 50);
+	float lifespanLimit = utilAyre::RandomScalar(0.3f, 0.8f);
+	float forceLimit = utilAyre::RandomScalar(10, 20);
+
+	particle_system->particles.resize(particlesNeeded);
+
+	for (int i = 0; i<particlesNeeded; i++)
+	{
+		auto source_direction = tyga::Vector3(0,1,0);
+
+		//Generate random force under forceLimit
+		auto thisForce = forceLimit * source_direction;
+		particle_system->particles[i].position = source_position;
+	}
+
+	isDetontated = true;
 }
 
 void ToyMine::
@@ -81,15 +98,11 @@ actorWillLeaveWorld(std::shared_ptr<tyga::Actor> actor)
 void ToyMine::
 actorClockTick(std::shared_ptr<tyga::Actor> actor)
 {
-	float current_time = tyga::BasicWorldClock::CurrentTime();
-	//basic particle show test
-	particle_system->particles.resize(50);
 
-	for (int i = 0; i<10; ++i) {
-		float angle = current_time + i * 6.28f / 10;
-		particle_system->particles[i].position = physics_model_->position() + tyga::Vector3(5 * cosf(angle), 2, 5 * sinf(angle));
-	}
+	float current_time = tyga::BasicWorldClock::CurrentTime();
 
     // HINT: once the toy has exploded and there is no visible traces left
     //       then call this->removeFromWorld() to free the memory
+	/*if (isDetontated)
+		removeFromWorld();*/
 }

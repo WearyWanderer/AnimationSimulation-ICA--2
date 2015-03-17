@@ -1,5 +1,6 @@
 #pragma once
 #include <tyga/Math.hpp>
+#include <math.h> //pi
 #include <random>
 
 namespace utilAyre
@@ -21,7 +22,8 @@ namespace utilAyre
 					   //setup stuff
 					   const Ogre::String initMaterial(Ogre::String materialName, Ogre::String texturePath);
 
-					   */
+	 */
+
 #pragma region ConversionFunctions & Clamp
 
 	float DegToRad(float degrees);
@@ -45,19 +47,13 @@ namespace utilAyre
 
 #pragma endregion
 
-#pragma region Bezier & Euler Functions
-
-	tyga::Vector3 CalcBezier(const tyga::Vector3 p0, const tyga::Vector3 p1, tyga::Vector3 p2, tyga::Vector3 p3, float s); //refactored version of the simple bezier calculations I used in OGRE, float between 0 and 1 for positon along a bezier curve
-
-#pragma endregion
-
 #pragma region NormaliseQuaternion/Magnitude, Direction Unit Vector
 
 	tyga::Quaternion NormQuat(tyga::Quaternion quat, float magnitude);
 
 	tyga::Vector3 DirectionVec(tyga::Matrix4x4 mat4); //DEPRECATED, use tyga::unit instead
 
-	float magnitudeOfQuaternion(tyga::Quaternion q, tyga::Quaternion qc);
+	float MagnitudeOfQuaternion(tyga::Quaternion q, tyga::Quaternion qc);
 
 #pragma endregion
 
@@ -86,7 +82,12 @@ namespace utilAyre
 #pragma region RandomFunctions
 
 	float RandomScalar(float min, float max);
+
+	int RandomScalar(int min, int max);
+
 	tyga::Vector3 RandomVec3();
+
+	tyga::Vector3 RandomDirVecSphere(float radius);
 
 #pragma endregion
 

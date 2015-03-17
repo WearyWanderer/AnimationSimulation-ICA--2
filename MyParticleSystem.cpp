@@ -14,7 +14,8 @@ int MyParticleSystem::graphicsSpriteVertexCount() const
 void MyParticleSystem::graphicsSpriteGenerate(tyga::GraphicsSpriteVertex vertex_array[]) const
 {
 	// NB: you may need to adjust this if you want to control the sprite look
-	for (unsigned int i = 0; i<particles.size(); ++i) {
+	for (unsigned int i = 0; i<particles.size(); ++i) 
+	{
 		vertex_array[i].position = particles[i].position;
 		vertex_array[i].size = 0.5f;
 		vertex_array[i].colour = tyga::Vector3(1, 1, 1);
