@@ -101,6 +101,6 @@ actorClockTick(std::shared_ptr<tyga::Actor> actor)
 
     // HINT: once the toy has exploded and there is no visible traces left
     //       then call this->removeFromWorld() to free the memory
-	/*if (isDetontated)
-		removeFromWorld();*/
+	if (isDetontated)
+		this->removeFromWorld();
 }
