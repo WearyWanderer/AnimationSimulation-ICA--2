@@ -87,7 +87,7 @@ namespace utilAyre
 
 	tyga::Vector3 RandomVec3();
 
-	tyga::Vector3 RandomDirVecSphere(float radius);
+	tyga::Vector3 RandomDirVecSphere();
 
 #pragma endregion
 

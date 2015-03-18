@@ -14,8 +14,16 @@ public:
 	{
 		tyga::Vector3 position;
 		tyga::Vector3 velocity;
+		tyga::Vector3 emit_direction;
+		float lifespan;
+		float timeSpawned;
+		bool living = false;
 
+		inline Particle();
+		inline Particle(tyga::Vector3 pos, tyga::Vector3 vel, tyga::Vector3 emit_dir, float life, float initTime) : position(pos), velocity(vel), emit_direction(emit_dir), lifespan(life), timeSpawned(initTime){ living = true; };
 	};
+
+	MyParticleSystem();
 
 	std::string graphicsSpriteTexture() const override;
 
@@ -25,8 +33,15 @@ public:
 
 	void graphicsSpriteGenerate(tyga::GraphicsSpriteVertex vertex_array[]) const override;
 
+	void AddParticleToPool(tyga::Vector3 emitter_position, tyga::Vector3 emit_direction, tyga::Vector3 force, float lifetime, float timeSpawned);
+
+	void ReapParticle(int particlePos);
+
+	int GetNextFreePosition();
+
 	std::vector<Particle> particles;
-	int particleQuantity = 10000;
+
+	int currentLivingParticles = 0;
 
 private:
 

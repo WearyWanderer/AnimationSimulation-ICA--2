@@ -42,21 +42,19 @@ trigger()
     tyga::debugLog("ToyMine::trigger: toy should explode now");
 
 	tyga::Vector3 source_position = utilAyre::GetPos(this->Actor()->Transformation());
-	float triggerStart = tyga::BasicWorldClock::CurrentTime();
+	triggerStart = tyga::BasicWorldClock::CurrentTime();
 
 	int particlesNeeded = utilAyre::RandomScalar(10, 50);
 	float lifespanLimit = utilAyre::RandomScalar(0.3f, 0.8f);
-	float forceLimit = utilAyre::RandomScalar(10, 20);
-
-	particle_system->particles.resize(particlesNeeded);
+	float forceLimit = (float)utilAyre::RandomScalar(10, 20);
 
 	for (int i = 0; i<particlesNeeded; i++)
 	{
-		auto source_direction = tyga::Vector3(0,1,0);
-
+		auto source_direction = utilAyre::RandomDirVecSphere();
 		//Generate random force under forceLimit
-		auto thisForce = forceLimit * source_direction;
-		particle_system->particles[i].position = source_position;
+		tyga::Vector3 thisForce = forceLimit * source_direction;
+
+		particle_system->AddParticleToPool(utilAyre::GetPos(this->Actor()->Transformation()), source_direction, thisForce, lifespanLimit, triggerStart); //add this particle to the living pool
 	}
 
 	isDetontated = true;

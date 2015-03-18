@@ -35,5 +35,6 @@ private:
 	std::shared_ptr<tyga::GraphicsSprite> graphics_sprite;
 
 	bool isDetontated = false;
+	float triggerStart;
 
 };

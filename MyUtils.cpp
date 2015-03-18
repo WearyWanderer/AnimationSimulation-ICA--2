@@ -212,7 +212,7 @@ namespace utilAyre
 		return random(randomSetup);
 	}
 
-	tyga::Vector3 RandomDirVecSphere(float radius)
+	tyga::Vector3 RandomDirVecSphere()
 	{
 		std::minstd_rand randomSetup; //set up the rand for all random functions
 		std::uniform_real_distribution<float> randomPoint(-1, 1);
@@ -226,9 +226,9 @@ namespace utilAyre
 							 radius * sin(randomInclination(randomSetup)) * sin(randomAzimuth(randomSetup)),
 							 radius * cos(randomInclination(randomSetup)));*/
 
-		return tyga::Vector3(radius * sin(randomInclination) * cos(randomAzimuth),
-							 radius * sin(randomInclination) * sin(randomAzimuth),
-							 radius * cos(randomInclination));
+		return tyga::Vector3(sin(randomInclination) * cos(randomAzimuth),
+							 sin(randomInclination) * sin(randomAzimuth),
+							 cos(randomInclination));
 	}
 
 #pragma endregion
