@@ -3,7 +3,9 @@
 #include <tyga/ActorDelegate.hpp>
 #include <tyga\ActorWorld.hpp>
 #include <tyga\GraphicsCentre.hpp>
+#include <tyga/BasicWorldClock.hpp>
 #include <vector>
+#include "MyUtils.hpp"
 
 class MyParticleSystem : public tyga::GraphicsSpriteDelegate,
 						 public std::enable_shared_from_this<MyParticleSystem>
@@ -32,6 +34,8 @@ public:
 	int graphicsSpriteVertexCount() const override;
 
 	void graphicsSpriteGenerate(tyga::GraphicsSpriteVertex vertex_array[]) const override;
+
+	void SimulateLivingParticles();
 
 	void AddParticleToPool(tyga::Vector3 emitter_position, tyga::Vector3 emit_direction, tyga::Vector3 force, float lifetime, float timeSpawned);
 

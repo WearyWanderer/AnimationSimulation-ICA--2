@@ -1,6 +1,7 @@
 #pragma once
 #include <tyga/Math.hpp>
 #include <math.h> //pi
+#include <time.h> 
 #include <random>
 
 namespace utilAyre

@@ -1,8 +1,9 @@
 #include "MyParticleSystem.hpp"
 
 MyParticleSystem::Particle::Particle(){
-	//Ensure the particle data is empty
-	position = tyga::Vector3(0, 200.f, 0);
+	
+	//hidden particles off screen just in case
+	position = tyga::Vector3(0, -400, 0);
 	velocity = tyga::Vector3(0, 0, 0);
 	emit_direction = tyga::Vector3(0, 0, 0);
 	living = false;
@@ -10,7 +11,7 @@ MyParticleSystem::Particle::Particle(){
 
 MyParticleSystem::MyParticleSystem()
 {
-	particles.resize(100000);
+	particles.resize(10000);
 }
 
 std::string MyParticleSystem::graphicsSpriteTexture() const
@@ -27,13 +28,28 @@ int MyParticleSystem::graphicsSpriteVertexCount() const
 void MyParticleSystem::graphicsSpriteGenerate(tyga::GraphicsSpriteVertex vertex_array[]) const
 {
 	// NB: you may need to adjust this if you want to control the sprite look
-	for (unsigned int i = 0; i<currentLivingParticles; ++i) 
+	for (unsigned int i = 0; i < currentLivingParticles; ++i)
 	{
 		vertex_array[i].position = particles[i].position;
 		vertex_array[i].size = 0.5f;
 		vertex_array[i].colour = tyga::Vector3(1, 1, 1);
 		vertex_array[i].alpha = 1.f;
 		vertex_array[i].rotation = 0.f; // NB: has no effect in basic renderer
+	}
+}
+
+void MyParticleSystem::SimulateLivingParticles()
+{
+	float deltaTime = tyga::BasicWorldClock::CurrentTickInterval();
+	for (unsigned int i = 0; i < currentLivingParticles; ++i)
+	{
+		//Pure acceleration should ge got similar to the physics manner, but without using gravity
+		tyga::Vector3 acceleration = (particles[i].emit_direction) / 0.2f;
+
+		//euler vec to get current tick position
+		particles[i].position = utilAyre::EulerVec(particles[i].position, deltaTime, particles[i].velocity);
+		//velocity using similar principle but  with acceleration as derivative
+		particles[i].velocity = utilAyre::EulerVec(particles[i].velocity, deltaTime, acceleration);
 	}
 }
 
@@ -46,10 +62,10 @@ void MyParticleSystem::AddParticleToPool(tyga::Vector3 emitter_position, tyga::V
 
 void MyParticleSystem::ReapParticle(int particlePos)
 {
-	std::iter_swap(particles.begin() + particlePos, particles.begin() + currentLivingParticles - 1); //swap this particle to be the last living particle
+	std::iter_swap(particles.begin() + particlePos, particles.begin() + currentLivingParticles); //swap this particle to be the last living particle
 
+	particles[currentLivingParticles] = Particle();
 
-	
 	currentLivingParticles--; //reduce the amount of living particles by one
 }
 
