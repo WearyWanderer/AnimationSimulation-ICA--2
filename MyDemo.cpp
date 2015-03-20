@@ -86,6 +86,7 @@ applicationDidStart()
     badger_->boundsActor()->attachComponent(badger_box);
 
 
+	srand(time(NULL));
     resetToys();
 
 }

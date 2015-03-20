@@ -94,6 +94,8 @@ namespace utilAyre
 
 	tyga::Vector3 ApplyGravity(tyga::Vector3 initForce);
 
+	tyga::Vector3 reduceAcceleration(tyga::Vector3 Vel, float RateOfChange);
+
 }
 
 

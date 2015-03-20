@@ -5,7 +5,7 @@ MyParticleSystem::Particle::Particle(){
 	//hidden particles off screen just in case
 	position = tyga::Vector3(0, -400, 0);
 	velocity = tyga::Vector3(0, 0, 0);
-	emit_direction = tyga::Vector3(0, 0, 0);
+	force = tyga::Vector3(0, 0, 0);
 	living = false;
 }
 
@@ -31,11 +31,13 @@ void MyParticleSystem::graphicsSpriteGenerate(tyga::GraphicsSpriteVertex vertex_
 	for (unsigned int i = 0; i < currentLivingParticles; ++i)
 	{
 		vertex_array[i].position = particles[i].position;
-		vertex_array[i].size = 0.5f;
+		vertex_array[i].size = 0.25f;
 		vertex_array[i].colour = tyga::Vector3(1, 1, 1);
 		vertex_array[i].alpha = 1.f;
 		vertex_array[i].rotation = 0.f; // NB: has no effect in basic renderer
+
 	}
+
 }
 
 void MyParticleSystem::SimulateLivingParticles()
@@ -44,12 +46,21 @@ void MyParticleSystem::SimulateLivingParticles()
 	for (unsigned int i = 0; i < currentLivingParticles; ++i)
 	{
 		//Pure acceleration should ge got similar to the physics manner, but without using gravity
-		tyga::Vector3 acceleration = (particles[i].emit_direction) / 0.2f;
+		tyga::Vector3 acceleration = particles[i].force / 0.2f;
+
+		//std::cout << "this particle force is " << std::to_string(particles[i].force.x) + " " + std::to_string(particles[i].force.y) + " " + std::to_string(particles[i].force.z) << std::endl;
+
+		tyga::Vector3 tempEulerMove = utilAyre::EulerVec(particles[i].position, deltaTime, particles[i].velocity);
+
+		//std::cout << "velocity is " << std::to_string(tempEulerMove.x) + " " + std::to_string(tempEulerMove.y) + " " + std::to_string(tempEulerMove.z) << std::endl;
 
 		//euler vec to get current tick position
-		particles[i].position = utilAyre::EulerVec(particles[i].position, deltaTime, particles[i].velocity);
+		particles[i].position = tempEulerMove;
+
+		particles[i].velocity = utilAyre::EulerVec(particles[i].velocity, deltaTime, acceleration); //this was my original attemp, results are still the same
+
 		//velocity using similar principle but  with acceleration as derivative
-		particles[i].velocity = utilAyre::EulerVec(particles[i].velocity, deltaTime, acceleration);
+		particles[i].force = tyga::Vector3(0, 0, 0);
 	}
 }
 

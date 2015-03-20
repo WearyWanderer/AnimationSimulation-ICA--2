@@ -5,6 +5,7 @@
 #include <tyga\GraphicsCentre.hpp>
 #include <tyga/BasicWorldClock.hpp>
 #include <vector>
+#include <iostream>
 #include "MyUtils.hpp"
 
 class MyParticleSystem : public tyga::GraphicsSpriteDelegate,
@@ -16,13 +17,13 @@ public:
 	{
 		tyga::Vector3 position;
 		tyga::Vector3 velocity;
-		tyga::Vector3 emit_direction;
+		tyga::Vector3 force;
 		float lifespan;
 		float timeSpawned;
 		bool living = false;
 
 		inline Particle();
-		inline Particle(tyga::Vector3 pos, tyga::Vector3 vel, tyga::Vector3 emit_dir, float life, float initTime) : position(pos), velocity(vel), emit_direction(emit_dir), lifespan(life), timeSpawned(initTime){ living = true; };
+		inline Particle(tyga::Vector3 pos, tyga::Vector3 vel, tyga::Vector3 emit_dir, float life, float initTime) : position(pos), velocity(vel), force(emit_dir), lifespan(life), timeSpawned(initTime){ living = true; };
 	};
 
 	MyParticleSystem();

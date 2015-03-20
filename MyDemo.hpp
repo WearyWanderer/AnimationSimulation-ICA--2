@@ -3,6 +3,7 @@
 #include <tyga/Math.hpp>
 #include <tyga/ApplicationDelegate.hpp>
 #include <tyga/GraphicsRendererProtocol.hpp>
+#include "MyParticleSystem.hpp"
 #include <random>
 #include <vector>
 

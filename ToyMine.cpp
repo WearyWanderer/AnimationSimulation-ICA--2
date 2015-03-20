@@ -44,17 +44,20 @@ trigger()
 	tyga::Vector3 source_position = utilAyre::GetPos(this->Actor()->Transformation());
 	triggerStart = tyga::BasicWorldClock::CurrentTime();
 
-	int particlesNeeded = utilAyre::RandomScalar(10, 50);
+	int particlesNeeded = utilAyre::RandomScalar(100, 250);
+
+	float lifespanLimit = utilAyre::RandomScalar(0.3f, 0.8f);
+	float forceLimit = (float)utilAyre::RandomScalar(40, 50);
 	
 	for (int i = 0; i<particlesNeeded; i++)
 	{
-		auto ptr = particle_system.lock();
-
-		float lifespanLimit = utilAyre::RandomScalar(0.3f, 0.8f);
-		float forceLimit = (float)utilAyre::RandomScalar(10, 20);
-		tyga::Vector3 source_direction = utilAyre::RandomDirVecSphere();
+		tyga::Vector3 source_direction = utilAyre::RandomDirVecSphere(); //randomised direction vector using schochastic properties
 		//Generate random force under forceLimit
 		tyga::Vector3 thisForce = forceLimit * source_direction;
+
+		#ifdef _DEBUG
+			//std::cout << "this particle force is " << std::to_string(thisForce.x) + " " + std::to_string(thisForce.y) + " " + std::to_string(thisForce.z) << std::endl;
+		#endif
 
 		particle_system->AddParticleToPool(source_position, source_direction, thisForce, lifespanLimit, triggerStart); //add this particle to the living pool
 	}

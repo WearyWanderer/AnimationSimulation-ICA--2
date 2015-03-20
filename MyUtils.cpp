@@ -200,25 +200,29 @@ namespace utilAyre
 
 	float RandomScalar(float min, float max)
 	{
-		std::minstd_rand randomSetup(time(NULL)); //set up the rand for all random functions
+		std::minstd_rand randomSetup(rand()); //set up the rand for all random functions, randomised seed to ensure different seeding of the minstd not based on time
 		std::uniform_real_distribution<float> random(min, max);
 		return random(randomSetup);
 	}
 
 	int RandomScalar(int min, int max)
 	{
-		std::minstd_rand randomSetup(time(NULL)); //set up the rand for all random functions
+		std::minstd_rand randomSetup(rand()); //set up the rand for all random functions, randomised seed to ensure different seeding of the minstd not based on time
 		std::uniform_int_distribution<int> random(min, max);
 		return random(randomSetup);
 	}
 
 	tyga::Vector3 RandomDirVecSphere()
 	{
-		std::minstd_rand randomSetup(time(NULL)); //set up the rand for all random functions
+		std::minstd_rand randomSetup(rand()); //set up the rand for all random functions, randomised seed to ensure different seeding of the minstd not based on time
 		std::uniform_real_distribution<float> randomPoint(-1, 1);
 		std::uniform_real_distribution<float> randomPoint2(0, 1);
+
+		//clumped method
 		/*std::uniform_real_distribution<float> randomAzimuth(0, M_PI * 2);
 		std::uniform_real_distribution<float> randomInclination(0, M_PI);*/
+
+		//utilised the more proper method of distribution in order to prevent 'clumping' at the polar points
 		float randomInclination(acos(randomPoint(randomSetup)));
 		float randomAzimuth(2 * M_PI * randomPoint2(randomSetup));
 
@@ -232,6 +236,42 @@ namespace utilAyre
 	}
 
 #pragma endregion
+
+	tyga::Vector3 reduceAcceleration(tyga::Vector3 Vel, float RateOfChange)
+	{
+		tyga::Vector3 newVel;
+
+		//This function is used to kind of interpolate any vector towards zero.
+		//However it's primary use is for "fake" physics as a means of "resisting forces"
+		//The rate of change follows as such:
+		//2 = 50%
+		//4 = 25%
+		//8 = 12.5% etc.
+		//It will return the amount to deduct from the original vector.
+
+		if (Vel.x < 0){
+			newVel.x += abs(Vel.x) / RateOfChange;
+		}
+		else if (Vel.x > 0){
+			newVel.x -= Vel.x / RateOfChange;
+		}
+
+		if (Vel.y < 0){
+			newVel.y += abs(Vel.y) / RateOfChange;
+		}
+		else if (Vel.y > 0){
+			newVel.y -= Vel.y / RateOfChange;
+		}
+
+		if (Vel.z < 0){
+			newVel.z += abs(Vel.z) / RateOfChange;
+		}
+		else if (Vel.z > 0){
+			newVel.z -= Vel.z / RateOfChange;
+		}
+
+		return newVel;
+	}
 
 #pragma endregion
 }
