@@ -1,8 +1,6 @@
 #pragma once
 
 #include <tyga/ActorDelegate.hpp>
-#include <ctime>
-#include <random>
 #include "MyPhysicsCentre.hpp"
 #include "MyParticleSystem.hpp"
 
@@ -33,11 +31,10 @@ private:
     actorClockTick(std::shared_ptr<tyga::Actor> actor) override;
 
     std::shared_ptr<PhysicsSphere> physics_model_;
-	std::weak_ptr<MyParticleSystem> particle_system;
+	std::shared_ptr<MyParticleSystem> particle_system;
 	std::shared_ptr<tyga::GraphicsSprite> graphics_sprite;
 
 	bool isDetontated = false;
 	float triggerStart;
-
 
 };

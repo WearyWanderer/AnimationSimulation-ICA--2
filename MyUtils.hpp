@@ -82,13 +82,13 @@ namespace utilAyre
 
 #pragma region RandomFunctions
 
-	float RandomScalar(float min, float max, std::minstd_rand engine);
+	float RandomScalar(float min, float max);
 
-	int RandomScalar(int min, int max, std::minstd_rand engine);
+	int RandomScalar(int min, int max);
 
-	tyga::Vector3 RandomVec3(std::minstd_rand engine);
+	tyga::Vector3 RandomVec3();
 
-	tyga::Vector3 RandomDirVecSphere(std::minstd_rand engine);
+	tyga::Vector3 RandomDirVecSphere();
 
 #pragma endregion
 

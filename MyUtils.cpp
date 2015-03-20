@@ -198,20 +198,23 @@ namespace utilAyre
 
 #pragma region RandomFunctions
 
-	float RandomScalar(float min, float max, std::minstd_rand randomSetup)
+	float RandomScalar(float min, float max)
 	{
+		std::minstd_rand randomSetup(time(NULL)); //set up the rand for all random functions
 		std::uniform_real_distribution<float> random(min, max);
 		return random(randomSetup);
 	}
 
-	int RandomScalar(int min, int max, std::minstd_rand randomSetup)
+	int RandomScalar(int min, int max)
 	{
+		std::minstd_rand randomSetup(time(NULL)); //set up the rand for all random functions
 		std::uniform_int_distribution<int> random(min, max);
 		return random(randomSetup);
 	}
 
-	tyga::Vector3 RandomDirVecSphere(std::minstd_rand randomSetup)
+	tyga::Vector3 RandomDirVecSphere()
 	{
+		std::minstd_rand randomSetup(time(NULL)); //set up the rand for all random functions
 		std::uniform_real_distribution<float> randomPoint(-1, 1);
 		std::uniform_real_distribution<float> randomPoint2(0, 1);
 		/*std::uniform_real_distribution<float> randomAzimuth(0, M_PI * 2);
