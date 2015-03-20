@@ -3,6 +3,7 @@
 #include <tyga/Math.hpp>
 #include <tyga/ApplicationDelegate.hpp>
 #include <tyga/GraphicsRendererProtocol.hpp>
+#include "MyParticleSystem.hpp"
 #include <random>
 #include <vector>
 
@@ -53,6 +54,7 @@ private:
 
     std::shared_ptr<Camera> camera_;
     std::shared_ptr<Badger> badger_;
+	std::shared_ptr<MyParticleSystem> particle_system;
 
     std::minstd_rand rand;
     static const tyga::Vector3 MIN_BOUND;
