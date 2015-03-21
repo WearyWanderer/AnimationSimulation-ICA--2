@@ -46,7 +46,7 @@ trigger()
 
 	int particlesNeeded = utilAyre::RandomScalar(100, 250);
 
-	float lifespanLimit = utilAyre::RandomScalar(0.3f, 0.8f);
+	float lifespanLimit = utilAyre::RandomScalar(0.8f, 1.5f);
 	float forceLimit = (float)utilAyre::RandomScalar(40, 50);
 	
 	for (int i = 0; i<particlesNeeded; i++)

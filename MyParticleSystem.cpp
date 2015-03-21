@@ -31,8 +31,8 @@ void MyParticleSystem::graphicsSpriteGenerate(tyga::GraphicsSpriteVertex vertex_
 	for (unsigned int i = 0; i < currentLivingParticles; ++i)
 	{
 		vertex_array[i].position = particles[i].position;
-		vertex_array[i].size = 0.25f;
-		vertex_array[i].colour = tyga::Vector3(1, 1, 1);
+		vertex_array[i].size = particles[i].particleSize;
+		vertex_array[i].colour = particles[i].particleCol;
 		vertex_array[i].alpha = 1.f;
 		vertex_array[i].rotation = 0.f; // NB: has no effect in basic renderer
 
@@ -42,7 +42,9 @@ void MyParticleSystem::graphicsSpriteGenerate(tyga::GraphicsSpriteVertex vertex_
 
 void MyParticleSystem::SimulateLivingParticles()
 {
-	float deltaTime = tyga::BasicWorldClock::CurrentTickInterval();
+	const float time = tyga::BasicWorldClock::CurrentTime();
+	const float deltaTime = tyga::BasicWorldClock::CurrentTickInterval();
+
 	for (unsigned int i = 0; i < currentLivingParticles; ++i)
 	{
 		//Pure acceleration should ge got similar to the physics manner, but without using gravity
@@ -61,6 +63,12 @@ void MyParticleSystem::SimulateLivingParticles()
 
 		//velocity using similar principle but  with acceleration as derivative
 		particles[i].force = tyga::Vector3(0, 0, 0);
+
+		particles[i].particleSize = utilAyre::LinStep(particles[i].timeSpawned + particles[i].totalLife, particles[i].timeSpawned, time);
+		particles[i].particleCol = utilAyre::Lerp(particles[i].particleCol, tyga::Vector3(1.0f, 1.0f, 0.0f), time);
+
+		if (particles[i].particleSize <= 0.0f)
+			ReapParticle(i);
 	}
 }
 

@@ -125,11 +125,6 @@ namespace utilAyre
 			return normal;
 		}
 
-	float LinStep(float min, float max, float x)
-		{
-			return (x - min) / (max - min);
-		}
-
 	float MagnitudeOfQuaternion(tyga::Quaternion q, tyga::Quaternion qc)
 		{
 			//Magnitude is used in order to normalise the quoternion
@@ -165,7 +160,7 @@ namespace utilAyre
 
 	float Lerp(float initPos, float endPos, float time)
 		{
-			return (initPos * (1 - time) + endPos * time);
+			return (1 - time)*initPos + time*endPos; //more accurate lerp method that guarantees when t = 1 endpos will be the return
 		}
 
 	tyga::Vector3 Lerp(tyga::Vector3 initPos, tyga::Vector3 endPos, float time)
@@ -194,6 +189,11 @@ namespace utilAyre
 	float Smoothstep(float t)
 		{
 			return ((3 * t*t) - (2 * t*t*t));
+		}
+
+	float LinStep(float min, float max, float x)
+		{
+			return (x - min) / (max - min);
 		}
 
 #pragma region RandomFunctions
@@ -236,42 +236,6 @@ namespace utilAyre
 	}
 
 #pragma endregion
-
-	tyga::Vector3 reduceAcceleration(tyga::Vector3 Vel, float RateOfChange)
-	{
-		tyga::Vector3 newVel;
-
-		//This function is used to kind of interpolate any vector towards zero.
-		//However it's primary use is for "fake" physics as a means of "resisting forces"
-		//The rate of change follows as such:
-		//2 = 50%
-		//4 = 25%
-		//8 = 12.5% etc.
-		//It will return the amount to deduct from the original vector.
-
-		if (Vel.x < 0){
-			newVel.x += abs(Vel.x) / RateOfChange;
-		}
-		else if (Vel.x > 0){
-			newVel.x -= Vel.x / RateOfChange;
-		}
-
-		if (Vel.y < 0){
-			newVel.y += abs(Vel.y) / RateOfChange;
-		}
-		else if (Vel.y > 0){
-			newVel.y -= Vel.y / RateOfChange;
-		}
-
-		if (Vel.z < 0){
-			newVel.z += abs(Vel.z) / RateOfChange;
-		}
-		else if (Vel.z > 0){
-			newVel.z -= Vel.z / RateOfChange;
-		}
-
-		return newVel;
-	}
 
 #pragma endregion
 }

@@ -18,12 +18,16 @@ public:
 		tyga::Vector3 position;
 		tyga::Vector3 velocity;
 		tyga::Vector3 force;
-		float lifespan;
+		float totalLife;
 		float timeSpawned;
 		bool living = false;
 
+		//additional visual effects
+		float particleSize = 0.25f;
+		tyga::Vector3 particleCol = tyga::Vector3(1.0f, 0.0f, 0.0f);
+
 		inline Particle();
-		inline Particle(tyga::Vector3 pos, tyga::Vector3 vel, tyga::Vector3 emit_dir, float life, float initTime) : position(pos), velocity(vel), force(emit_dir), lifespan(life), timeSpawned(initTime){ living = true; };
+		inline Particle(tyga::Vector3 pos, tyga::Vector3 vel, tyga::Vector3 emit_dir, float life, float initTime) : position(pos), velocity(vel), force(emit_dir), totalLife(life), timeSpawned(initTime){ living = true; };
 	};
 
 	MyParticleSystem();
