@@ -39,7 +39,7 @@ private:
 
     virtual void
     applicationInputStateChanged(
-        std::shared_ptr<tyga::InputStateProtocol> input_state) override;
+    std::shared_ptr<tyga::InputStateProtocol> input_state) override;
 
     void
     resetToys();
@@ -60,6 +60,7 @@ private:
     static const tyga::Vector3 MAX_BOUND;
 
     std::vector<std::shared_ptr<ToyMine>> toys_;
+	std::shared_ptr<ParticlePoolInstance> mainParticlePool;
 
     float trigger_time_;
 };

@@ -58,8 +58,9 @@ trigger()
 		#ifdef _DEBUG
 			//std::cout << "this particle force is " << std::to_string(thisForce.x) + " " + std::to_string(thisForce.y) + " " + std::to_string(thisForce.z) << std::endl;
 		#endif
+		auto tempP = particle_system.lock();
 
-		particle_system->AddParticleToPool(source_position, source_direction, thisForce, lifespanLimit, triggerStart); //add this particle to the living pool
+		tempP->GetPoolPtr()->AddParticleToPool(source_position, source_direction, thisForce, lifespanLimit, triggerStart); //add this particle to the living pool
 	}
 
 	isDetontated = true;
@@ -89,8 +90,6 @@ actorDidEnterWorld(std::shared_ptr<tyga::Actor> actor)
     actor->attachComponent(graphics_model);
     actor->attachComponent(physics_model);
     world->addActor(actor);
-	particle_system = std::make_shared<MyParticleSystem>();
-	graphics_sprite = graphics->newSpriteWithDelegate(particle_system);
 }
 
 void ToyMine::
@@ -103,10 +102,9 @@ actorClockTick(std::shared_ptr<tyga::Actor> actor)
 {
 	float current_time = tyga::BasicWorldClock::CurrentTime();
 
-	particle_system->SimulateLivingParticles();
     // HINT: once the toy has exploded and there is no visible traces left
     //       then call this->removeFromWorld() to free the memory
 
-	//if (isDetontated)
-		//this->removeFromWorld();
+	if (isDetontated)
+		this->removeFromWorld();
 }

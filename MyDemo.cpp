@@ -85,7 +85,8 @@ applicationDidStart()
     auto badger_box = physics->newBox();
     badger_->boundsActor()->attachComponent(badger_box);
 
-
+	mainParticlePool = std::make_shared<ParticlePoolInstance>();
+	mainParticlePool->addToWorld(world);
 	srand(time(NULL));
     resetToys();
 
@@ -210,6 +211,7 @@ resetToys()
         auto position = tyga::Vector3(x_rand(rand), y_rand(rand), z_rand(rand));
         auto mass = m_rand(rand);
         toy->reset(position, mass);
+		toy->SetParticlePtr(mainParticlePool);
     }
 }
 

@@ -19,6 +19,7 @@ public:
     void
     trigger();
 
+	inline void SetParticlePtr(std::weak_ptr<ParticlePoolInstance> w_ptr){ particle_system = w_ptr; }
 private:
 
     virtual void
@@ -31,8 +32,7 @@ private:
     actorClockTick(std::shared_ptr<tyga::Actor> actor) override;
 
     std::shared_ptr<PhysicsSphere> physics_model_;
-	std::shared_ptr<MyParticleSystem> particle_system;
-	std::shared_ptr<tyga::GraphicsSprite> graphics_sprite;
+	std::weak_ptr<ParticlePoolInstance> particle_system;
 
 	bool isDetontated = false;
 	float triggerStart;

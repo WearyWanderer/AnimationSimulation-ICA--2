@@ -57,3 +57,29 @@ private:
 	std::shared_ptr<tyga::GraphicsSpriteDelegate> spriteImage;
 
 };
+
+/*I've decided to use the ActorDelegate system to utilise tyrones actorClockTick calls and similar things, 
+to create one singular contiguous block of memory to manage all the particles.*/
+class ParticlePoolInstance : public tyga::ActorDelegate 
+{
+public:
+
+	ParticlePoolInstance();
+
+	inline std::shared_ptr<MyParticleSystem> GetPoolPtr(){ return pool; };
+
+private:
+
+	virtual void
+		actorDidEnterWorld(std::shared_ptr<tyga::Actor> actor) override;
+
+	virtual void
+		actorWillLeaveWorld(std::shared_ptr<tyga::Actor> actor) override;
+
+	virtual void
+		actorClockTick(std::shared_ptr<tyga::Actor> actor) override;
+
+	std::shared_ptr<MyParticleSystem> pool;
+	std::shared_ptr<tyga::GraphicsSprite> graphics_sprite;
+
+};

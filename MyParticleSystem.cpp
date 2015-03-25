@@ -102,3 +102,26 @@ int MyParticleSystem::GetNextFreePosition()
 
 	return position; //return the position we can access cold storage
 }
+
+ParticlePoolInstance::ParticlePoolInstance()
+{
+
+}
+
+void ParticlePoolInstance::actorDidEnterWorld(std::shared_ptr<tyga::Actor> actor)
+{
+	pool = std::make_shared<MyParticleSystem>();
+	auto graphics = tyga::GraphicsCentre::defaultCentre();
+	graphics_sprite = graphics->newSpriteWithDelegate(pool);
+}
+
+void ParticlePoolInstance::actorWillLeaveWorld(std::shared_ptr<tyga::Actor> actor)
+{
+
+}
+
+void ParticlePoolInstance::actorClockTick(std::shared_ptr<tyga::Actor> actor)
+{
+	pool->SimulateLivingParticles();
+}
+
