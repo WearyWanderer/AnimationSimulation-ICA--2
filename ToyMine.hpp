@@ -35,6 +35,7 @@ private:
 	std::weak_ptr<ParticlePoolInstance> particle_system;
 
 	bool isDetontated = false;
+	bool waitingToDie = false;
 	float triggerStart;
-
+	std::minstd_rand rand;
 };

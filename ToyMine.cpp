@@ -106,10 +106,23 @@ actorClockTick(std::shared_ptr<tyga::Actor> actor)
 	float current_time = tyga::BasicWorldClock::CurrentTime();
 
 	if (physics_model_->collisionOccured)
+	{
+		
+		std::uniform_real_distribution<float> x_rand(-0.2f, 0.2f);
+		std::uniform_real_distribution<float> z_rand(-0.2f, 0.2f);
+		std::uniform_real_distribution<float> t_rand(1, 3);
+		auto dir = tyga::unit(tyga::Vector3(x_rand(rand), 1, z_rand(rand)));
+		auto force = 600 * dir;
+		triggerStart = current_time + t_rand(rand);
+		applyForce(force);
+		physics_model_->collisionOccured = false;
+		waitingToDie = true;
+	}
+
+	if (triggerStart < current_time && waitingToDie)
 		trigger();
     // HINT: once the toy has exploded and there is no visible traces left
     //       then call this->removeFromWorld() to free the memory
-
 	if (isDetontated)
 		this->removeFromWorld();
 }

@@ -31,7 +31,7 @@ applicationWindowWillInit(int& width,
     width = 1024;
     height = 576;
 
-    std::cout << "Animation and Simulation Programming 2013" << std::endl;
+    std::cout << "Animation and Simulation Programming 2015" << std::endl;
     std::cout << "Badger Banging" << std::endl << std::endl;
     std::cout << "Use the gamepad thumbsticks to control the Badger vehicle." << std::endl;
     std::cout << "Hold the right shoulder button to control the camera." << std::endl;
