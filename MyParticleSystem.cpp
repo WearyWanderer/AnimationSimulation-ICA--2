@@ -47,6 +47,19 @@ void MyParticleSystem::SimulateLivingParticles()
 
 	for (unsigned int i = 0; i < currentLivingParticles; ++i)
 	{
+			/*if (particles[i].position.y < -0.1f)
+			{
+				particles[i].position.y = 0.0f;
+				if (particles[i].velocity.y < -0.1f)
+				{
+					particles[i].velocity.y = 0.f;
+				}
+				else
+				{
+					particles[i].velocity.y = abs(particles[i].velocity.y);
+				}
+			 }*/
+
 		//Pure acceleration should ge got similar to the physics manner, but without using gravity
 		tyga::Vector3 acceleration = particles[i].force / 0.2f;
 

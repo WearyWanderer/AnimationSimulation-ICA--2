@@ -33,7 +33,7 @@ struct PhysicsPlane : public PhysicsObject
 struct PhysicsSphere : public PhysicsObject
 {
     float radius;
-
+	bool collisionOccured = false;
     PhysicsSphere();
 };
 

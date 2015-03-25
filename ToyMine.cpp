@@ -38,29 +38,32 @@ applyForce(tyga::Vector3 force)
 void ToyMine::
 trigger()
 {
-    // TODO: code to begin the explosion animation/simulation
-    tyga::debugLog("ToyMine::trigger: toy should explode now");
-
-	tyga::Vector3 source_position = utilAyre::GetPos(this->Actor()->Transformation());
-	triggerStart = tyga::BasicWorldClock::CurrentTime();
-
-	int particlesNeeded = utilAyre::RandomScalar(100, 250);
-
-	float lifespanLimit = utilAyre::RandomScalar(0.8f, 1.5f);
-	float forceLimit = (float)utilAyre::RandomScalar(40, 50);
-	
-	for (int i = 0; i<particlesNeeded; i++)
+	if (!isDetontated)
 	{
-		tyga::Vector3 source_direction = utilAyre::RandomDirVecSphere(); //randomised direction vector using schochastic properties
-		//Generate random force under forceLimit
-		tyga::Vector3 thisForce = forceLimit * source_direction;
+		// TODO: code to begin the explosion animation/simulation
+		tyga::debugLog("ToyMine::trigger: toy should explode now");
 
-		#ifdef _DEBUG
+		tyga::Vector3 source_position = utilAyre::GetPos(this->Actor()->Transformation());
+		triggerStart = tyga::BasicWorldClock::CurrentTime();
+
+		int particlesNeeded = utilAyre::RandomScalar(100, 250);
+
+		float lifespanLimit = utilAyre::RandomScalar(0.8f, 1.5f);
+		float forceLimit = (float)utilAyre::RandomScalar(40, 50);
+
+		for (int i = 0; i < particlesNeeded; i++)
+		{
+			tyga::Vector3 source_direction = utilAyre::RandomDirVecSphere(); //randomised direction vector using schochastic properties
+			//Generate random force under forceLimit
+			tyga::Vector3 thisForce = forceLimit * source_direction;
+
+#ifdef _DEBUG
 			//std::cout << "this particle force is " << std::to_string(thisForce.x) + " " + std::to_string(thisForce.y) + " " + std::to_string(thisForce.z) << std::endl;
-		#endif
-		auto tempP = particle_system.lock();
+#endif
+			auto tempP = particle_system.lock();
 
-		tempP->GetPoolPtr()->AddParticleToPool(source_position, source_direction, thisForce, lifespanLimit, triggerStart); //add this particle to the living pool
+			tempP->GetPoolPtr()->AddParticleToPool(source_position, source_direction, thisForce, lifespanLimit, triggerStart); //add this particle to the living pool
+		}
 	}
 
 	isDetontated = true;
@@ -102,6 +105,8 @@ actorClockTick(std::shared_ptr<tyga::Actor> actor)
 {
 	float current_time = tyga::BasicWorldClock::CurrentTime();
 
+	if (physics_model_->collisionOccured)
+		trigger();
     // HINT: once the toy has exploded and there is no visible traces left
     //       then call this->removeFromWorld() to free the memory
 
