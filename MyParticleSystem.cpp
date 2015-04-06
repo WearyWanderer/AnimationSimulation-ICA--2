@@ -11,7 +11,7 @@ MyParticleSystem::Particle::Particle(){
 
 MyParticleSystem::MyParticleSystem()
 {
-	particles.resize(10000);
+	particles.resize(10000); //upon startup, we create a pool of 10,000 particles max
 }
 
 std::string MyParticleSystem::graphicsSpriteTexture() const
@@ -22,7 +22,7 @@ std::string MyParticleSystem::graphicsSpriteTexture() const
 int MyParticleSystem::graphicsSpriteVertexCount() const
 {
 	// NB: you may need to adjust this count if you keep dead particles
-	return currentLivingParticles;
+	return currentLivingParticles; //return only the living particles count
 }
 
 void MyParticleSystem::graphicsSpriteGenerate(tyga::GraphicsSpriteVertex vertex_array[]) const
@@ -47,7 +47,9 @@ void MyParticleSystem::SimulateLivingParticles()
 
 	for (unsigned int i = 0; i < currentLivingParticles; ++i)
 	{
-			/*if (particles[i].position.y < -0.1f)
+
+#ifdef NDEBUG //when in release I used this simple position logic check to stop particles from exploding below the floor. Basic but just an additional bit of detail
+		if (particles[i].position.y < -0.1f)
 			{
 				particles[i].position.y = 0.0f;
 				if (particles[i].velocity.y < -0.1f)
@@ -58,38 +60,36 @@ void MyParticleSystem::SimulateLivingParticles()
 				{
 					particles[i].velocity.y = abs(particles[i].velocity.y);
 				}
-			 }*/
+		}
+#endif
 
 		//Pure acceleration should ge got similar to the physics manner, but without using gravity
 		tyga::Vector3 acceleration = particles[i].force / 0.2f;
 
-		//std::cout << "this particle force is " << std::to_string(particles[i].force.x) + " " + std::to_string(particles[i].force.y) + " " + std::to_string(particles[i].force.z) << std::endl;
-
-		tyga::Vector3 tempEulerMove = utilAyre::EulerVec(particles[i].position, deltaTime, particles[i].velocity);
-
-		//std::cout << "velocity is " << std::to_string(tempEulerMove.x) + " " + std::to_string(tempEulerMove.y) + " " + std::to_string(tempEulerMove.z) << std::endl;
-
 		//euler vec to get current tick position
+		tyga::Vector3 tempEulerMove = utilAyre::EulerVec(particles[i].position, deltaTime, particles[i].velocity);
 		particles[i].position = tempEulerMove;
 
-		particles[i].velocity = utilAyre::EulerVec(particles[i].velocity, deltaTime, acceleration); //this was my original attemp, results are still the same
-
 		//velocity using similar principle but  with acceleration as derivative
+		particles[i].velocity = utilAyre::EulerVec(particles[i].velocity, deltaTime, acceleration); //this was my original attemp, results are still the same [personal note, ignore]
+
 		particles[i].force = tyga::Vector3(0, 0, 0);
 
-		particles[i].particleSize = utilAyre::LinStep(particles[i].timeSpawned + particles[i].totalLife, particles[i].timeSpawned, time);
-		particles[i].particleCol = utilAyre::Lerp(particles[i].particleCol, tyga::Vector3(1.0f, 1.0f, 0.0f), time);
+		particles[i].particleSize = utilAyre::LinStep(particles[i].timeSpawned + particles[i].totalLife, particles[i].timeSpawned, time); //rather than both using one function or being linked together, I used linear step for size and lerp for colour to create an explosion-esque sparkly effect for particles
+		particles[i].particleCol = utilAyre::Lerp(particles[i].particleCol, tyga::Vector3(1.0f, 1.0f, 0.0f), time); //this col change no longer really is used, as we just use a texture now
 
-		if (particles[i].particleSize <= 0.0f)
+		if (particles[i].particleSize <= 0.0f) //if the particle's size is no longer visible, reap back into cold storage
 			ReapParticle(i);
 	}
 }
 
 void MyParticleSystem::AddParticleToPool(tyga::Vector3 emitter_position, tyga::Vector3 emit_direction, tyga::Vector3 force, float lifetime, float timeSpawned)
 {
-	particles[currentLivingParticles] = Particle(emitter_position, emit_direction, force, lifetime, timeSpawned);
-
-	currentLivingParticles++;
+	if (currentLivingParticles < particles.size() - 1) //only if there is cold stored particles available, create particles
+	{
+		particles[currentLivingParticles] = Particle(emitter_position, emit_direction, force, lifetime, timeSpawned);
+		currentLivingParticles++;
+	}
 }
 
 void MyParticleSystem::ReapParticle(int particlePos)

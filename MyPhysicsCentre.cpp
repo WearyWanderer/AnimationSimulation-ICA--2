@@ -174,7 +174,7 @@ runloopWillBegin()
 			
 			tyga::Vector3 dir = tyga::unit(box->position() - sphere->position()); //get direction vector
 			
-			float radius = std::abs(tyga::dot(box->U(), dir)) + std::abs(tyga::dot(box->V(), dir)) + std::abs(tyga::dot(box->W(), dir));
+			float radius = std::abs(tyga::dot(box->U(), dir)) + std::abs(tyga::dot(box->V(), dir)) + std::abs(tyga::dot(box->W(), dir)); //plane radius of the badger boxes
 			
 
 			if (dist < (radius + sphere->radius)) //If the length is less than radius of box and sphere, a collision must be occuring

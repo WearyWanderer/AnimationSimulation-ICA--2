@@ -43,26 +43,27 @@ trigger()
 		// TODO: code to begin the explosion animation/simulation
 		tyga::debugLog("ToyMine::trigger: toy should explode now");
 
-		tyga::Vector3 source_position = utilAyre::GetPos(this->Actor()->Transformation());
-		triggerStart = tyga::BasicWorldClock::CurrentTime();
+		tyga::Vector3 source_position = utilAyre::GetPos(this->Actor()->Transformation()); //get initial position
+		triggerStart = tyga::BasicWorldClock::CurrentTime(); //time the explosion begins
 
-		int particlesNeeded = utilAyre::RandomScalar(100, 250);
+		int particlesNeeded = utilAyre::RandomScalar(100, 250); //random engine generates number of particles in this explosion
 
-		float lifespanLimit = utilAyre::RandomScalar(0.8f, 1.5f);
-		float forceLimit = (float)utilAyre::RandomScalar(40, 50);
+		float lifespanLimit = utilAyre::RandomScalar(0.8f, 1.5f); //lifespan of the particles for this mine
+		float forceLimit = (float)utilAyre::RandomScalar(40, 50); //force outward from the explosion
 
-		for (int i = 0; i < particlesNeeded; i++)
+		for (int i = 0; i < particlesNeeded; i++) //for each particle, loop through and generate animation
 		{
 			tyga::Vector3 source_direction = utilAyre::RandomDirVecSphere(); //randomised direction vector using schochastic properties
+
 			//Generate random force under forceLimit
 			tyga::Vector3 thisForce = forceLimit * source_direction;
 
 #ifdef _DEBUG
 			//std::cout << "this particle force is " << std::to_string(thisForce.x) + " " + std::to_string(thisForce.y) + " " + std::to_string(thisForce.z) << std::endl;
 #endif
-			auto tempP = particle_system.lock();
+			auto tempP = particle_system.lock(); //access the particle pool
 
-			tempP->GetPoolPtr()->AddParticleToPool(source_position, source_direction, thisForce, lifespanLimit, triggerStart); //add this particle to the living pool
+			tempP->GetPoolPtr()->AddParticleToPool(source_position, source_direction, thisForce, lifespanLimit, triggerStart); //add this particle to the living pool from cold storage
 		}
 	}
 
@@ -119,7 +120,7 @@ actorClockTick(std::shared_ptr<tyga::Actor> actor)
 		waitingToDie = true;
 	}
 
-	if (triggerStart < current_time && waitingToDie)
+	if (triggerStart < current_time && waitingToDie) //if the mine has been collided with and the countdown to explosion has ended
 		trigger();
     // HINT: once the toy has exploded and there is no visible traces left
     //       then call this->removeFromWorld() to free the memory

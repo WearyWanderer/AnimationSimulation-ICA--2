@@ -59,7 +59,9 @@ private:
 };
 
 /*I've decided to use the ActorDelegate system to utilise tyrones actorClockTick calls and similar things, 
-to create one singular contiguous block of memory to manage all the particles.*/
+to create one singular contiguous block of memory to manage all the particles.
+A instance of this is held within the MyDemo, and is linked to by weak_ptr within mines
+*/
 class ParticlePoolInstance : public tyga::ActorDelegate 
 {
 public:
