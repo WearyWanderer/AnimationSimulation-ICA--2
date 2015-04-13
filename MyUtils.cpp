@@ -224,7 +224,7 @@ namespace utilAyre
 
 		//utilised the more proper method of distribution in order to prevent 'clumping' at the polar points
 		float randomInclination(acos(randomPoint(randomSetup)));
-		float randomAzimuth(2 * M_PI * randomPoint2(randomSetup));
+		float randomAzimuth((2 * (float)M_PI) * randomPoint2(randomSetup));
 
 		/*return tyga::Vector3(radius * sin(randomInclination(randomSetup)) * cos(randomAzimuth(randomSetup)), 
 							 radius * sin(randomInclination(randomSetup)) * sin(randomAzimuth(randomSetup)),

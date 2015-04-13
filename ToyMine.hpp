@@ -11,7 +11,7 @@ public:
     ToyMine();
 
     void
-    reset(tyga::Vector3 position, float mass);
+	reset(tyga::Vector3 position, float mass);
 
     void
     applyForce(tyga::Vector3 force);
@@ -19,7 +19,17 @@ public:
     void
     trigger();
 
+	void
+	GenerateExplosion(int explosionType);
+
+	void ToyMine::
+	ParticleAllocExplosion(); //gives particle system explosion particles
+
+	void ToyMine::
+	ParticleAllocSmoke(); //gives particle system smoke particles
+
 	inline void SetParticlePtr(std::weak_ptr<ParticlePoolInstance> w_ptr){ particle_system = w_ptr; }
+	inline void SetParticleType(int type){ particleType = type; }
 private:
 
     virtual void
@@ -37,5 +47,6 @@ private:
 	bool isDetontated = false;
 	bool waitingToDie = false;
 	float triggerStart;
+	int particleType;
 	std::minstd_rand rand;
 };

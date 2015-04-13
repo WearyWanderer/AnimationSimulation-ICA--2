@@ -38,15 +38,37 @@ applyForce(tyga::Vector3 force)
 void ToyMine::
 trigger()
 {
+	GenerateExplosion(this->particleType);
+
+	isDetontated = true;
+}
+
+void ToyMine::
+GenerateExplosion(int explosionType)
+{
+	switch (explosionType) //based on the type of mine instantiated, lets have some fun and create two different kinds of particle effect
+	{
+	case 1:
+		ParticleAllocExplosion();
+		break;
+	case 2:
+		ParticleAllocSmoke();
+		break;
+	default:
+		break;
+	}
+	
+}
+
+void ToyMine::
+ParticleAllocExplosion()
+{
 	if (!isDetontated)
 	{
-		// TODO: code to begin the explosion animation/simulation
-		tyga::debugLog("ToyMine::trigger: toy should explode now");
-
 		tyga::Vector3 source_position = utilAyre::GetPos(this->Actor()->Transformation()); //get initial position
 		triggerStart = tyga::BasicWorldClock::CurrentTime(); //time the explosion begins
 
-		int particlesNeeded = utilAyre::RandomScalar(100, 250); //random engine generates number of particles in this explosion
+		int particlesNeeded = utilAyre::RandomScalar(100, 175); //random engine generates number of particles in this explosion
 
 		float lifespanLimit = utilAyre::RandomScalar(0.8f, 1.5f); //lifespan of the particles for this mine
 		float forceLimit = (float)utilAyre::RandomScalar(40, 50); //force outward from the explosion
@@ -66,8 +88,34 @@ trigger()
 			tempP->GetPoolPtr()->AddParticleToPool(source_position, source_direction, thisForce, lifespanLimit, triggerStart); //add this particle to the living pool from cold storage
 		}
 	}
+}
 
-	isDetontated = true;
+void ToyMine::
+ParticleAllocSmoke()
+{
+	if (!isDetontated)
+	{
+		tyga::Vector3 source_position = utilAyre::GetPos(this->Actor()->Transformation()); //get initial position
+		triggerStart = tyga::BasicWorldClock::CurrentTime(); //time the explosion begins
+
+		int particlesNeeded = utilAyre::RandomScalar(60, 90); //random engine generates number of particles in this explosion
+
+		for (int i = 0; i < particlesNeeded; i++) //for each particle, loop through and generate animation
+		{
+			float lifespanLimit = utilAyre::RandomScalar(0.4f, 2.4f); //lifespan of the particles for this mine
+			float forceLimit = (float)utilAyre::RandomScalar(10, 80); //force outward from the explosion
+			tyga::Vector3 source_direction = utilAyre::RandomDirVecSphere(); //randomised direction vector using schochastic properties
+			//Generate random force under forceLimit
+			tyga::Vector3 thisForce = forceLimit * source_direction;
+
+#ifdef _DEBUG
+			//std::cout << "this particle force is " << std::to_string(thisForce.x) + " " + std::to_string(thisForce.y) + " " + std::to_string(thisForce.z) << std::endl;
+#endif
+			auto tempP = particle_system.lock(); //access the particle pool
+
+			tempP->GetPoolPtr()->AddParticleToPool(source_position, source_direction, thisForce, lifespanLimit, triggerStart, tyga::Vector3(0.1f,0.1f,0.5f)); //add this particle to the living pool from cold storage
+		}
+	}
 }
 
 void ToyMine::
@@ -79,7 +127,17 @@ actorDidEnterWorld(std::shared_ptr<tyga::Actor> actor)
 
     auto graphics_model = graphics->newModel();
     graphics_model->material = graphics->newMaterial();
-    graphics_model->material->colour = tyga::Vector3(1, 0.33f, 0);
+	switch (particleType)
+	{
+	case 1:
+		graphics_model->material->colour = tyga::Vector3(1, 0.33f, 0);
+		break;
+	case 2:
+		graphics_model->material->colour = tyga::Vector3(0.5f, 0.73f, 0);
+		break;
+	default:
+		break;
+	}
     graphics_model->mesh = graphics->newMeshWithIdentifier("sphere");
     graphics_model->xform = tyga::Matrix4x4( 0.5f,    0,    0,   0,
                                                 0, 0.5f,    0,   0,

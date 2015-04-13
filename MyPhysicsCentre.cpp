@@ -145,37 +145,36 @@ newBox()
 void MyPhysicsCentre::
 runloopWillBegin()
 {
-	for (auto b_iter = boxes_.begin(); b_iter != boxes_.end(); b_iter++) //copied the above layout for boxes, checking inside here for each sphere as there is only one box on the badger
+	for (auto s_iter = spheres_.begin(); s_iter != spheres_.end(); s_iter++) //copied 
 	{
 		// only continue if a strong reference is available
-		if (b_iter->expired()) continue;
-		auto box = b_iter->lock();
+		if (s_iter->expired()) continue;
+		auto sphere = s_iter->lock();
 
-		for (auto s_iter = spheres_.begin(); s_iter != spheres_.end(); s_iter++) //copied 
+		// very crude ground plane collision detection and response
+		// TODO: this could be improved
+		const auto& p = sphere->position();
+		if (p.y < sphere->radius) {
+			sphere->velocity.y = 0;
+			auto actor = sphere->Actor();
+			if (actor != nullptr) {
+				auto xform = actor->Transformation();
+				xform._31 = sphere->radius;
+				actor->setTransformation(xform);
+			}
+		}
+
+		for (auto b_iter = boxes_.begin(); b_iter != boxes_.end(); b_iter++) //copied the above layout for boxes, checking inside here for each sphere as there is only one box on the badger
 		{
 			// only continue if a strong reference is available
-			if (s_iter->expired()) continue;
-			auto sphere = s_iter->lock();
-
-			// very crude ground plane collision detection and response
-			// TODO: this could be improved
-			const auto& p = sphere->position();
-			if (p.y < sphere->radius) {
-				sphere->velocity.y = 0;
-				auto actor = sphere->Actor();
-				if (actor != nullptr) {
-					auto xform = actor->Transformation();
-					xform._31 = sphere->radius;
-					actor->setTransformation(xform);
-				}
-			}
+			if (b_iter->expired()) continue;
+			auto box = b_iter->lock();
 
 			float dist = tyga::length(box->position() - sphere->position()); //relative distance(length) between box and sphere
-			
+
 			tyga::Vector3 dir = tyga::unit(box->position() - sphere->position()); //get direction vector
-			
+
 			float radius = std::abs(tyga::dot(box->U(), dir)) + std::abs(tyga::dot(box->V(), dir)) + std::abs(tyga::dot(box->W(), dir)); //plane radius of the badger boxes
-			
 
 			if (dist < (radius + sphere->radius)) //If the length is less than radius of box and sphere, a collision must be occuring
 			{
@@ -207,7 +206,7 @@ runloopExecuteTask()
 
 		model->velocity += acceleration * delta_time; //integrate the acceleration with time
 
-		tyga::Vector3 newPos = utilAyre::EulerVec(model->position(), delta_time, model->velocity); //use the calculated lerp of this frame to lerp the toymine's position
+		tyga::Vector3 newPos = utilAyre::EulerVec(model->position(), delta_time, model->velocity); //use the calculated euler of this frame to lerp the toymine's position
 
 		// TODO: update the actor's transformation
 		actor->setTransformation(utilAyre::Translate(newPos));

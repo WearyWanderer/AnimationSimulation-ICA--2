@@ -44,6 +44,8 @@ public:
 
 	void AddParticleToPool(tyga::Vector3 emitter_position, tyga::Vector3 emit_direction, tyga::Vector3 force, float lifetime, float timeSpawned);
 
+	void AddParticleToPool(tyga::Vector3 emitter_position, tyga::Vector3 emit_direction, tyga::Vector3 force, float lifetime, float timeSpawned, tyga::Vector3 colour); //overloaded version that gives a new particle colour, other than generic explosion
+
 	void ReapParticle(int particlePos);
 
 	int GetNextFreePosition();

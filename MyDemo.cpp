@@ -35,8 +35,8 @@ applicationWindowWillInit(int& width,
     std::cout << "Badger Banging" << std::endl << std::endl;
     std::cout << "Use the gamepad thumbsticks to control the Badger vehicle." << std::endl;
     std::cout << "Hold the right shoulder button to control the camera." << std::endl;
-    std::cout << "Press F2 to swap camera modes." << std::endl;
-    std::cout << "Press F5 to reset the toys." << std::endl;
+    std::cout << "Press Backspace to swap camera modes." << std::endl;
+    std::cout << "Press Left to reset the toys." << std::endl;
     std::cout << "Press spacebar to prematurely bang the toys." << std::endl << std::endl;
 }
 
@@ -85,7 +85,7 @@ applicationDidStart()
     auto badger_box = physics->newBox();
     badger_->boundsActor()->attachComponent(badger_box);
 
-	mainParticlePool = std::make_shared<ParticlePoolInstance>();
+	mainParticlePool = std::make_shared<ParticlePoolInstance>(); //create a factory for my particles and the particle pool here, so a single pool is needed rather than many small pools
 	mainParticlePool->addToWorld(world);
 	srand(time(NULL));
     resetToys();
@@ -207,6 +207,7 @@ resetToys()
     toys_.resize(n_rand(rand));
     for (auto& toy : toys_) {
         toy = std::make_shared<ToyMine>();
+		toy->SetParticleType(rand() % 2 + 1); //set the type of explosion we want from this mine
         toy->addToWorld(world);
         auto position = tyga::Vector3(x_rand(rand), y_rand(rand), z_rand(rand));
         auto mass = m_rand(rand);

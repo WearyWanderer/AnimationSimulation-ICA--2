@@ -6,6 +6,7 @@ MyParticleSystem::Particle::Particle(){
 	position = tyga::Vector3(0, -400, 0);
 	velocity = tyga::Vector3(0, 0, 0);
 	force = tyga::Vector3(0, 0, 0);
+	particleSize = 0;
 	living = false;
 }
 
@@ -76,7 +77,7 @@ void MyParticleSystem::SimulateLivingParticles()
 		particles[i].force = tyga::Vector3(0, 0, 0);
 
 		particles[i].particleSize = utilAyre::LinStep(particles[i].timeSpawned + particles[i].totalLife, particles[i].timeSpawned, time); //rather than both using one function or being linked together, I used linear step for size and lerp for colour to create an explosion-esque sparkly effect for particles
-		particles[i].particleCol = utilAyre::Lerp(particles[i].particleCol, tyga::Vector3(1.0f, 1.0f, 0.0f), time); //this col change no longer really is used, as we just use a texture now
+		particles[i].particleCol = utilAyre::Lerp(particles[i].particleCol, tyga::Vector3(1.0f, 1.0f, 0.0f), deltaTime); //this col change no longer really is used, as we just use a texture now
 
 		if (particles[i].particleSize <= 0.0f) //if the particle's size is no longer visible, reap back into cold storage
 			ReapParticle(i);
@@ -88,6 +89,29 @@ void MyParticleSystem::AddParticleToPool(tyga::Vector3 emitter_position, tyga::V
 	if (currentLivingParticles < particles.size() - 1) //only if there is cold stored particles available, create particles
 	{
 		particles[currentLivingParticles] = Particle(emitter_position, emit_direction, force, lifetime, timeSpawned);
+		currentLivingParticles++;
+	}
+	else
+	{
+		ReapParticle(0); //reap the first and oldest particle, and generate a new one
+		particles[currentLivingParticles] = Particle(emitter_position, emit_direction, force, lifetime, timeSpawned);
+		currentLivingParticles++;
+	}
+}
+
+void MyParticleSystem::AddParticleToPool(tyga::Vector3 emitter_position, tyga::Vector3 emit_direction, tyga::Vector3 force, float lifetime, float timeSpawned, tyga::Vector3 colour)
+{
+	if (currentLivingParticles < particles.size() - 1) //only if there is cold stored particles available, create particles
+	{
+		particles[currentLivingParticles] = Particle(emitter_position, emit_direction, force, lifetime, timeSpawned);
+		particles[currentLivingParticles].particleCol = colour; //set the colour to be this instead
+		currentLivingParticles++;
+	}
+	else
+	{
+		ReapParticle(0); //reap the first and oldest particle, and generate a new one
+		particles[currentLivingParticles] = Particle(emitter_position, emit_direction, force, lifetime, timeSpawned);
+		particles[currentLivingParticles].particleCol = colour; //set the colour to be this instead of default
 		currentLivingParticles++;
 	}
 }
